@@ -7,6 +7,10 @@ const app = express();
 //Use express router
 app.use('/', router);
 
+//setting up view engine
+app.set('view engine', 'ejs');
+app.set('views', './views');
+
 app.listen(port, (err) => {
     if (err) {
         console.error('Error', err);
