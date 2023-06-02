@@ -3,6 +3,9 @@ const router = require('./routes/index');
 const cookieParser = require('cookie-parser');
 const expressLayouts = require('express-ejs-layouts');
 const db = require('./config/mongoose');
+const session = require('express-session');
+const passport = require('passport');
+const passportLocal = require('./config/passport-local-strategy');
 const port = 8000;
 
 const app = express();
@@ -23,12 +26,26 @@ app.use(expressLayouts);
 app.set('layout extractStyles', true);
 app.set('layout extractScripts', true);
 
-//Use express router
-app.use('/', router);
-
 //setting up view engine
 app.set('view engine', 'ejs');
 app.set('views', './views');
+
+app.use(session({
+    name: 'codeial',
+    //Change the secret before deployment
+    secret: 'blahsomething',
+    saveUninitialized: false,
+    resave: false,
+    cookie: {
+        maxAge: (100 * 60 * 1000)
+    }
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+//Use express router
+app.use('/', router);
 
 app.listen(port, (err) => {
     if (err) {
