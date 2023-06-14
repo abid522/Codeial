@@ -1,0 +1,20 @@
+<link rel="stylesheet" href="/css/users.css">
+
+<div class="container">
+    <h2>Users page!</h2>
+
+    <p><%= user.name %></p>
+    <p><%= user.email %></p>
+
+    <% for( let i = 0; i < posts.length; i++ ) { %>
+    <div class="card">
+        <!-- <img class="card-img-top" src="img_avatar1.png" alt="Card image" style="width:100%"> -->
+        <div class="card-body">
+            <!-- <h4 class="card-title">John Doe</h4> -->
+            <p class="card-text"><%= posts[i].content %></p>
+            <span class="badge badge-pill badge-info">Author: <%= user.name %></span>
+            <!-- <a href="#" class="btn btn-primary">See Profile</a> -->
+        </div>
+    </div>
+    <% } %>
+</div>
