@@ -3,7 +3,7 @@ const router = express.Router();
 const usersController = require('../controllers/users_controller');
 const passport = require('passport');
 
-router.get('/profile', usersController.profile); //passport.checkAuthentication is not used here
+router.get('/profile', checkAuthentication, usersController.profile); //passport.checkAuthentication is not used here
 router.get('/signup', usersController.signup);
 router.get('/login', usersController.login);
 router.post('/create', usersController.create);
@@ -15,5 +15,15 @@ router.post('/create-session',
 );
 
 router.get('/signout', usersController.signout);
+
+function checkAuthentication(req, res, next) {
+    // if the user is signed in, then pass on the request to the next function(controller's action)
+    if (req.isAuthenticated()) {
+        return next();
+    }
+
+    // if the user is not signed in
+    return res.redirect('/users/login');
+}
 
 module.exports = router;

@@ -8,6 +8,7 @@
         </div>
     </div>
 
+    <% if (locals.user) { %>
     <section id="post-form">
         <h4>Create Post: </h4>
         <form action="/posts/create-post" method="post">
@@ -17,6 +18,7 @@
             </div>
         </form>
     </section>
+    <% } %>
 
     <section id="all-user-posts">
         <% for( post of posts ) { %>
