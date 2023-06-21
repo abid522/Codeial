@@ -1,4 +1,5 @@
 <link rel="stylesheet" href="/css/users.css">
+<script src="/js/comment-toggler.js"></script>
 
 <div class="container">
     <h2>Users page!</h2>
@@ -12,8 +13,26 @@
         <div class="card-body">
             <!-- <h4 class="card-title">John Doe</h4> -->
             <p class="card-text"><%= posts[i].content %></p>
-            <span class="badge badge-pill badge-info">Author: <%= user.name %></span>
             <!-- <a href="#" class="btn btn-primary">See Profile</a> -->
+        </div>
+        <div class="card-footer">
+            <h6>Comments:</h6>
+            <!-- add a commnet form -->
+            <form class="form-inline" action="#">
+                <input type="text" class="form-control form-control-sm mb-2 mr-sm-2 flex-fill"
+                    placeholder="Add a comment..." name="comment">
+                <button type="submit" class="btn btn-primary btn-sm mb-2">Submit</button>
+            </form>
+            <!-- comment list -->
+            <button class="btn btn-sm btn-outline-info mb-2 cmt-btn-toggler">See Comments</button>
+            <div class="small comment-toggler">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">First item</li>
+                    <li class="list-group-item">Second item</li>
+                    <li class="list-group-item">Third item</li>
+                    <li class="list-group-item">Fourth item</li>
+                </ul>
+            </div>
         </div>
     </div>
     <% } %>
