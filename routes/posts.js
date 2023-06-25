@@ -3,6 +3,7 @@ const router = express.Router();
 const postController = require('../controllers/posts_controller');
 
 router.post('/create-post', checkAuthentication, postController.createPost);
+router.get('/delete-post/:id', checkAuthentication, postController.deletePost);
 
 function checkAuthentication(req, res, next) {
     // if the user is signed in, then pass on the request to the next function(controller's action)
