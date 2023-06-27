@@ -2,19 +2,27 @@ const User = require('../models/user');
 const Post = require('../models/post');
 
 module.exports.profile = function (req, res) {
-    User.findById(req.user.id)
+    User.findById(req.params.id)
         .then((user) => {
-            const posts = Post.find({ user: req.user.id });
+            const posts = Post.find({ user: req.params.id });
 
-            posts.then(posts => {
-                return res.render('profile', {
-                    title: "Users",
-                    user: user,
-                    posts: posts
-                });
-            }).catch(err => {
-                console.log(err + 'Error fetching posts');
-            })
+            posts
+                .populate('user')
+                .populate({
+                    path: 'comments',
+                    populate: {
+                        path: 'user'
+                    }
+                })
+                .then(posts => {
+                    return res.render('profile', {
+                        title: user.name,
+                        profile_user: user,
+                        posts: posts
+                    });
+                }).catch(err => {
+                    console.log(err + 'Error fetching posts');
+                })
         })
         .catch(err => {
             console.log(err + 'Error fiinding user');

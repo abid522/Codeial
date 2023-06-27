@@ -7,7 +7,7 @@
         <ul class="navbar-nav d-flex">
             <% if (locals.user) { %>
             <li class="nav-item">
-                <a class="nav-link" href="/users/profile">
+                <a class="nav-link" href="/users/profile/<%= user.id %>">
                     <%= user.name %>
                 </a>
             </li>

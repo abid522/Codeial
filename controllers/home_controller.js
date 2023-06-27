@@ -1,4 +1,5 @@
 const Post = require('../models/post');
+const User = require('../models/user');
 
 module.exports.home = function (req, res) {
     // console.log(req.cookies);
@@ -12,10 +13,17 @@ module.exports.home = function (req, res) {
             }
         })
         .then(posts => {
-            return res.render('home', {
-                title: 'Codeial | Home',
-                posts: posts
-            });
+            User.find({})
+                .then(users => {
+                    return res.render('home', {
+                        title: 'Codeial | Home',
+                        posts: posts,
+                        users: users
+                    });
+                })
+                .catch(err => {
+                    console.log(err + 'Error fetching users');
+                })
         })
         .catch(err => {
             console.log(err + 'Error fetching posts');

@@ -1,79 +1,92 @@
 <link rel="stylesheet" href="/css/home.css">
 <script src="/js/comment-toggler.js"></script>
 
-<div class="container">
-    <div class="jumbotron jumbotron-fluid">
-        <div class="container text-center">
-            <h1>Codeial</h1>
-            <p class="lead">A social media platform powered by Node.js, Express and MongoDB</p>
-        </div>
+
+<div class="jumbotron jumbotron-fluid">
+    <div class="container text-center">
+        <h1>Codeial</h1>
+        <p class="lead">A social media platform powered by Node.js, Express and MongoDB</p>
     </div>
-
-    <% if (locals.user) { %>
-    <section id="post-form">
-        <h4>Create Post: </h4>
-        <form action="/posts/create-post" method="post">
-            <div class="form-group">
-                <textarea class="form-control" name="content" cols="30" rows="5" required></textarea>
-                <button type="submit" class="btn btn-success btn-block mt-2">Post</button>
-            </div>
-        </form>
-    </section>
-    <% } %>
-
-    <section id="all-user-posts">
-        <% for( post of posts ) { %>
-        <div class="card mb-2">
-            <!-- <img class="card-img-top" src="img_avatar1.png" alt="Card image" style="width:100%"> -->
-            <div class="card-body">
-                <!-- <h4 class="card-title">John Doe</h4> -->
-                <div class="d-flex justify-content-between">
-                    <div>
-                        <p class="card-text"><%= post.content %></p>
-                        <span class="badge badge-pill badge-info">Author: <%= post.user.name %></span>
+</div>
+<div class="container">
+    <div class="row">
+        <div id="posts-and-form" class="col-md-9">
+            <% if (locals.user) { %>
+            <section id="post-form">
+                <h4>Create Post: </h4>
+                <form action="/posts/create-post" method="post">
+                    <div class="form-group">
+                        <textarea class="form-control" name="content" cols="30" rows="5" required></textarea>
+                        <button type="submit" class="btn btn-success btn-block mt-2">Post</button>
                     </div>
-                    <% if (locals.user && locals.user.id == post.user.id) { %>
-                    <div>
-                        <a href="/posts/delete-post/<%= post.id %>" class="btn btn-sm btn-danger">Delete</a>
-                    </div>
-                    <% } %>
-                </div>
-                <!-- <a href="#" class="btn btn-primary">See Profile</a> -->
-            </div>
-            <div class="card-footer">
-                <h6>Comments:</h6>
-                <!-- add a commnet form -->
-                <% if (locals.user) { %>
-                <form class="form-inline" action="/comments/create-comment" method="post">
-                    <input type="text" class="form-control form-control-sm mb-2 mr-sm-2 flex-fill"
-                        placeholder="Add a comment..." name="comment" required>
-                    <input type="hidden" name="post" value="<%= post._id %>">
-                    <button type="submit" class="btn btn-primary btn-sm mb-2">Submit</button>
                 </form>
-                <% } %>
-                <!-- comment list -->
-                <button class="btn btn-sm btn-outline-info mb-2 cmt-btn-toggler">See Comments</button>
-                <div class="small comment-toggler">
-                    <ul class="list-group list-group-flush" id="post-comments-<%= post._id %>">
-                        <% for( comment of post.comments ) { %>
-                        <li class="list-group-item d-flex justify-content-between">
+            </section>
+            <% } %>
+
+            <section id="all-user-posts">
+                <% for( post of posts ) { %>
+                <div class="card mb-2">
+                    <!-- <img class="card-img-top" src="img_avatar1.png" alt="Card image" style="width:100%"> -->
+                    <div class="card-body">
+                        <!-- <h4 class="card-title">John Doe</h4> -->
+                        <div class="d-flex justify-content-between">
                             <div>
-                                <p><%= comment.content %></p>
-                                <p><b><%= comment.user.name %></b></p>
+                                <p class="card-text"><%= post.content %></p>
+                                <span class="badge badge-pill badge-info">Author: <%= post.user.name %></span>
                             </div>
-                            <% if (locals.user && locals.user.id == comment.user.id) { %>
+                            <% if (locals.user && locals.user.id == post.user.id) { %>
                             <div>
-                                <a href="/comments/delete-comment/<%= comment.id %>">
-                                    &#10006;
-                                </a>
+                                <a href="/posts/delete-post/<%= post.id %>" class="btn btn-sm btn-danger">Delete</a>
                             </div>
                             <% } %>
-                        </li>
+                        </div>
+                        <!-- <a href="#" class="btn btn-primary">See Profile</a> -->
+                    </div>
+                    <div class="card-footer">
+                        <h6>Comments:</h6>
+                        <!-- add a commnet form -->
+                        <% if (locals.user) { %>
+                        <form class="form-inline" action="/comments/create-comment" method="post">
+                            <input type="text" class="form-control form-control-sm mb-2 mr-sm-2 flex-fill"
+                                placeholder="Add a comment..." name="comment" required>
+                            <input type="hidden" name="post" value="<%= post._id %>">
+                            <button type="submit" class="btn btn-primary btn-sm mb-2">Submit</button>
+                        </form>
                         <% } %>
-                    </ul>
+                        <!-- comment list -->
+                        <!-- <button class="btn btn-sm btn-outline-info mb-2 cmt-btn-toggler">See Comments</button> -->
+                        <div class="small">
+                            <ul class="list-group list-group-flush" id="post-comments-<%= post._id %>">
+                                <% for( comment of post.comments ) { %>
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <div>
+                                        <p><%= comment.content %></p>
+                                        <p><b><%= comment.user.name %></b></p>
+                                    </div>
+                                    <% if (locals.user && locals.user.id == comment.user.id) { %>
+                                    <div>
+                                        <a href="/comments/delete-comment/<%= comment.id %>">
+                                            &#10006;
+                                        </a>
+                                    </div>
+                                    <% } %>
+                                </li>
+                                <% } %>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
+                <% } %>
+            </section>
+        </div>
+        <div id="user-friends" class="col-md-3">
+            <h4>Friends: </h4>
+            <div class="list-group">
+                <% for( user of users ) { %>
+                <a href="/users/profile/<%= user.id %>"
+                    class="list-group-item list-group-item-action"><%= user.name %></a>
+                <% } %>
             </div>
         </div>
-        <% } %>
-    </section>
+    </div>
 </div>
