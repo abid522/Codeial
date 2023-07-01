@@ -1,12 +1,31 @@
 <link rel="stylesheet" href="/css/users.css">
 <!-- <script src="/js/comment-toggler.js"></script> -->
+<div class="container-fluid">
+    <div class="lead alert alert-info text-center">
+        <h2><%= profile_user.name %></h2>
+        <p class="font-weight-bold"><%= profile_user.email %></p>
+    </div>
+</div>
 
 <div class="container">
-    <h2>User page!</h2>
-
-    <p><%= profile_user.name %></p>
-    <p><%= profile_user.email %></p>
-
+    <% if (locals.user.id == profile_user.id) { %>
+    <section id="update-form" class="mb-3">
+        <h4>Update Your Profile:</h4>
+        <form action="/users/update-profile/<%= profile_user.id %>" method="post">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" class="form-control" id="name" name="name" value="<%= profile_user.name %>" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" class="form-control" id="email" name="email" value="<%= profile_user.email %>"
+                    required>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Update</button>
+        </form>
+    </section>
+    <hr>
+    <% } %>
     <section id="user-posts">
         <% for( post of posts ) { %>
         <div class="card mb-2">

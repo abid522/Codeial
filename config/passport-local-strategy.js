@@ -13,7 +13,7 @@ passport.use(new LocalStrategy({
         User.findOne({ email: email })
             .then((user) => {
                 if (!user || user.password != password) {
-                    req.flash('error', 'Invalid User name or Password');
+                    //req.flash('error', 'Invalid User name or Password');
                     return done(null, false);
                 }
                 return done(null, user);

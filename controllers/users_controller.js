@@ -30,6 +30,21 @@ module.exports.profile = function (req, res) {
         })
 }
 
+module.exports.updateProfile = function (req, res) {
+    if (req.user.id == req.params.id) {
+        User.findByIdAndUpdate(req.params.id, req.body)
+            .then(data => {
+                return res.redirect('back');
+            })
+            .catch(err => {
+                console.log(err + 'Error updating profile!');
+                return res.redirect('back');
+            })
+    } else {
+        return res.status(401).send('Unauthorized Access!!');
+    }
+}
+
 // Rendering the sign-up page
 module.exports.signup = function (req, res) {
     if (req.isAuthenticated()) {
