@@ -9,11 +9,11 @@ module.exports.createPost = function (req, res) {
 
     newPost.save()
         .then(data => {
-            console.log('Post created successfully');
+            req.flash('success', 'Post created Successfully!');
             return res.redirect('back');
         })
         .catch(err => {
-            console.log(err + 'Error in creating Post');
+            req.flash('error', 'Error creating post!');
             return res.redirect('back');
         });
 }
@@ -48,10 +48,11 @@ module.exports.deletePost = async function (req, res) {
         if (post.user == req.user.id) {
             await Post.findByIdAndDelete(req.params.id);
             await Comment.deleteMany({ post: req.params.id });
+            req.flash('success', 'Post deleted Successfully!');
             return res.redirect('back');
         }
     } catch (err) {
-        console.log(err + 'Error Deleting the post');
+        req.flash('error', 'Error deleting post!');
         return res.redirect('back');
     }
 }

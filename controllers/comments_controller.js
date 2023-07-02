@@ -13,15 +13,16 @@ module.exports.createComment = function (req, res) {
                 .then(comment => {
                     post.comments.push(comment);
                     post.save();
+                    req.flash('success', 'Comment Added!');
                     return res.redirect('back');
                 })
                 .catch(err => {
-                    console.log(err + 'Error adding comment');
+                    req.flash('error', 'Error adding comment!');
                     return res.redirect('back');
                 })
         })
         .catch(err => {
-            console.log(err + 'Error finding Post');
+            req.flash('error', 'Error finding post!');
             return res.redirect('back');
         })
 }
@@ -37,16 +38,17 @@ module.exports.deleteComment = function (req, res) {
                         return Post.findByIdAndUpdate(postId, { $pull: { comments: req.params.id } });
                     })
                     .then(result => {
+                        req.flash('success', 'Comment deleted!');
                         return res.redirect('back');
                     })
                     .catch(err => {
-                        console.log(err + 'Error deleting the comment');
+                        req.flash('error', 'Error deleting the comment!');
                         return res.redirect('back');
                     })
             }
         })
         .catch(err => {
-            console.log(err + 'Error finding the comment');
+            req.flash('error', 'Error finding the comment!');
             return res.redirect('back');
         });
 }

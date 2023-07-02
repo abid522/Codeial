@@ -34,13 +34,15 @@ module.exports.updateProfile = function (req, res) {
     if (req.user.id == req.params.id) {
         User.findByIdAndUpdate(req.params.id, req.body)
             .then(data => {
+                req.flash('success', 'Profile updated successfully!');
                 return res.redirect('back');
             })
             .catch(err => {
-                console.log(err + 'Error updating profile!');
+                req.flash('error', 'Problem updating profile!');
                 return res.redirect('back');
             })
     } else {
+        req.flash('error', 'Access Denied!');
         return res.status(401).send('Unauthorized Access!!');
     }
 }
@@ -68,6 +70,7 @@ module.exports.login = function (req, res) {
 //Signing up the user
 module.exports.create = function (req, res) {
     if (req.body.password != req.body.confirm_password) {
+        req.flash('error', `Password doesn't match!`);
         return res.redirect('back');
     }
 
@@ -75,6 +78,7 @@ module.exports.create = function (req, res) {
 
     user.then((data) => {
         if (data) {
+            req.flash('error', 'User already exist!');
             return res.redirect('back');
         }
 
@@ -83,9 +87,11 @@ module.exports.create = function (req, res) {
 
         newUser.save()
             .then((data) => {
+                req.flash('success', 'Signed Up Successfully!');
                 return res.redirect('/users/login');
             })
             .catch((err) => {
+                req.flash('error', 'Error creating user!');
                 return res.redirect('back');
             })
 
@@ -97,6 +103,7 @@ module.exports.create = function (req, res) {
 
 //Log in and creating the session for the user
 module.exports.createSession = function (req, res) {
+    req.flash('success', 'Logged In Successfully!');
     return res.redirect('/');
 }
 
@@ -106,6 +113,7 @@ module.exports.signout = function (req, res) {
         if (err) {
             return next(err);
         }
+        req.flash('success', 'Logged Out Successfully!');
         return res.redirect('/');
     });
 }
