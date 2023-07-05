@@ -1,3 +1,13 @@
 /* .comment-toggler {
     display: none;
 } */
+
+#profile-header {
+    height: 35%;
+}
+
+img {
+    width: 10%;
+    height: 75%;
+    object-fit: contain;
+}

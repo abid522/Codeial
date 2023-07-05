@@ -22,6 +22,9 @@ app.use(cookieParser());
 //Telling express the loaction of static files
 app.use(express.static('./assets'));
 
+//Make the uploads folder available to the browser
+app.use('/uploads', express.static(__dirname + '/uploads'));
+
 //Telling express to use express-ejs-layouts library
 app.use(expressLayouts);
 
