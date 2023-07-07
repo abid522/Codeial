@@ -2,7 +2,9 @@
 <!-- <script src="/js/comment-toggler.js"></script> -->
 
 <div id="profile-header" class="lead alert alert-info text-center">
+    <% if (profile_user.avatar) { %>
     <img src="<%= profile_user.avatar %>" alt="<%= profile_user.name %>" class="rounded-circle img-fluid">
+    <% } %>
     <h2 class="pt-2"><%= profile_user.name %></h2>
     <p class="font-weight-bold"><%= profile_user.email %></p>
 </div>

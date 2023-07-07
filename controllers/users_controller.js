@@ -1,5 +1,7 @@
 const User = require('../models/user');
 const Post = require('../models/post');
+const fs = require('fs');
+const path = require('path');
 
 module.exports.profile = function (req, res) {
     User.findById(req.params.id)
@@ -55,10 +57,18 @@ module.exports.updateProfile = async function (req, res) {
                 user.name = req.body.name;
                 user.email = req.body.email;
                 if (req.file) {
+                    if (user.avatar) {
+                        //deleting the avatar from hard disk
+                        fs.unlinkSync(path.join(__dirname + '/../' + user.avatar));
+                        //deleting the avatar from database.
+                        User.findByIdAndUpdate(req.params.id, { $unset: { avatar: 1 } });
+                    }
+
                     //saving the path of uploaded file in the avatar field of the user
                     user.avatar = User.avatarPath + '/' + req.file.filename;
                 }
                 user.save();
+                req.flash('success', 'Profile updated successfully!');
                 return res.redirect('back');
             });
         } catch (err) {
