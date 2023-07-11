@@ -1,5 +1,6 @@
 const Comment = require('../models/comment');
 const Post = require('../models/post');
+const commentsMailer = require('../mailers/comments_mailer');
 
 module.exports.createComment = function (req, res) {
     Post.findById(req.body.post)
@@ -13,11 +14,16 @@ module.exports.createComment = function (req, res) {
                 .then(comment => {
                     post.comments.push(comment);
                     post.save();
+                    return comment.populate('user', 'name email'); // Update this line
+                })
+                .then(comment => {
+                    commentsMailer.newComment(comment);
                     req.flash('success', 'Comment Added!');
                     return res.redirect('back');
                 })
                 .catch(err => {
                     req.flash('error', 'Error adding comment!');
+                    console.log(err);
                     return res.redirect('back');
                 })
         })
@@ -25,6 +31,8 @@ module.exports.createComment = function (req, res) {
             req.flash('error', 'Error finding post!');
             return res.redirect('back');
         })
+
+
 }
 
 module.exports.deleteComment = function (req, res) {
