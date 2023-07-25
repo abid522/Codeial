@@ -1,4 +1,7 @@
 const express = require('express');
+const env = require('./config/environment');
+const logger = require('morgan');
+
 const router = require('./routes/index');
 const cookieParser = require('cookie-parser');
 const expressLayouts = require('express-ejs-layouts');
@@ -20,10 +23,13 @@ app.use(express.urlencoded());
 app.use(cookieParser());
 
 //Telling express the loaction of static files
-app.use(express.static('./assets'));
+app.use(express.static(env.asset_path));
 
 //Make the uploads folder available to the browser
 app.use('/uploads', express.static(__dirname + '/uploads'));
+
+//setting up logs
+app.use(logger(env.morgan.mode, env.morgan.options));
 
 //Telling express to use express-ejs-layouts library
 app.use(expressLayouts);
@@ -40,7 +46,7 @@ app.set('views', './views');
 app.use(session({
     name: 'codeial',
     //Change the secret before deployment
-    secret: 'blahsomething',
+    secret: env.session_cookie_key,
     saveUninitialized: false,
     resave: false,
     cookie: {
