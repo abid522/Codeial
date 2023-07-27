@@ -2,6 +2,7 @@ const express = require('express');
 const env = require('./config/environment');
 const logger = require('morgan');
 
+const mongoose = require('mongoose');
 const router = require('./routes/index');
 const cookieParser = require('cookie-parser');
 const expressLayouts = require('express-ejs-layouts');
@@ -70,11 +71,18 @@ app.use(customMware.setFlash);
 //Use express router
 app.use('/', router);
 
-app.listen(port, (err) => {
-    if (err) {
-        console.error('Error', err);
-        return;
-    } else {
-        console.log('Server is up and running at port:', port);
-    }
-});
+mongoose.connect('mongodb+srv://aabid:v3vQDAcgMG1wxkeh@cluster0.epmde6o.mongodb.net/codeial_prod')
+    .then(result => {
+        console.log('DB: MongoDB is connected!');
+        app.listen(port, (err) => {
+            if (err) {
+                console.error('Error', err);
+                return;
+            } else {
+                console.log('Server is up and running at port:', port);
+            }
+        });
+    })
+    .catch(err => {
+        console.log(err);
+    })
